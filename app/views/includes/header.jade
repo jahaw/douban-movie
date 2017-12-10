@@ -1,0 +1,103 @@
+.nav-top
+    .container-fluid
+        .row
+            a.navbar-brand(href="/") 豆瓣 &nbsp;&nbsp;&nbsp;
+            a.navbar-brand(href="/") 读书 &nbsp;&nbsp;
+            a.navbar-brand(href="/") 电影 &nbsp;&nbsp;
+            a.navbar-brand(href="/") 音乐 &nbsp;&nbsp;
+            a.navbar-brand(href="/") 同城 &nbsp;&nbsp;
+            a.navbar-brand(href="/") 小组 &nbsp;&nbsp;
+            a.navbar-brand(href="/") 阅读 &nbsp;&nbsp;
+            a.navbar-brand(href="/") FM &nbsp;&nbsp;
+            a.navbar-brand(href="/") 时间 &nbsp;&nbsp;
+            a.navbar-brand(href="/") 东西 &nbsp;&nbsp;
+            a.navbar-brand(href="/") 市集 &nbsp;&nbsp;
+            a.navbar-brand(href="/") 更多 &nbsp;&nbsp;
+                .col-md-5.pull-right
+                    if user && user.role >= 10
+                        .navbar-right
+                            a(href="/admin/user/list",style="color:green;font-style:normal;margin-right:10px;") &nbsp;#{user.name}
+                            span &nbsp;|&nbsp;
+                            .navbar-right
+                                span.dropdown(style="display: inline-block;cursor:pointer;")
+                                    .dropdown-toggle(id="dLable",type="button",data-toggle="dropdown",aria-haspopup="true",aria-expanded="false" style="color:blue;font-style:normal;margin-left:10px;") 后台管理
+                                        span.caret
+                                    ul(class="dropdown-menu",aria-labelledby="dLable")
+                                        li
+                                            a(href="/admin/movie/list") 电影列表
+                                        li
+                                            a(href="/admin/movie/new") 电影录入
+                                        li
+                                            a(href="/admin/category/list") 电影分类
+                                        li
+                                            a(href="/admin/category/new") 新增分类
+                                        li
+                                            a(href="/admin/user/list") 用户列表
+                                        li
+                                            a(href="/") 返回首页
+
+                            .navbar-right
+                                a(href="/logout",style="color:red;font-style:normal;") 注销
+                                span &nbsp;|&nbsp;
+                    else if user && user.role === 0
+                        .col-md-4.pull-right
+                            p.navbar-text.navbar-right
+                            a(href="/",style="color:green;font-style:normal;margin-right:10px;") &nbsp;#{user.name}
+                            span &nbsp;|&nbsp;
+                                .navbar-right
+                            a(href="/logout",style="color:red;font-style:normal;") 注销
+                    else
+                        .col-md-4.pull-right
+                            p.navbar-text.navbar-right#sign
+                            h5.text-right(style="margin-top: 10px")
+                            a(href="#",style="margin:0 0 10px 10px",data-toggle="modal",data-target="#signin-modal") 登录
+                            span &nbsp;|&nbsp;
+                                .navbar-right
+                            a(href="#",data-toggle="modal",data-target="#signup-modal") 注册
+
+#signin-modal.modal.fade(role="dialog" aria-labelledby="登录豆瓣电影" tabindex="-1")
+    .modal-dialog
+        .modal-container(style="background:#fff;border-radius: 6px;-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);")
+            form(method="POST",action="/user/signin")
+                .modal-header 登录豆瓣电影
+                .modal-body.clearfix
+                    .form-group.clearfix
+                        label(for="signinName") ID：
+                        input.form-control(type="text", id="signinName" ,placeholder="ID",name="user[name]")
+
+                    .form-group
+                        label(for="signPassword") Password：
+                        input.form-control(type="password", id="signPassword" ,placeholder="Password",name="user[password]")
+
+                .modal-footer
+                    button.btn.btn-default(type="button",data-dismiss="modal") close
+                    button.btn.btn-success(type="submit") submit
+
+#signup-modal.modal.fade(role="dialog" aria-labelledby="注册" tabindex="-1")
+    .modal-dialog
+        .modal-container(style="background:#fff;border-radius: 6px;-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);")
+            form(method="POST",action="/user/signup")
+                .modal-header 注册
+                .modal-body.clearfix
+                    .form-group.clearfix
+                        label(for="signupName") ID：
+                        input.form-control(type="text", id="signupName" ,placeholder="ID",name="user[name]")
+                    .form-group
+                        label(for="signupPassword") Password：
+                        input.form-control(type="password", id="signupPassword" ,placeholder="Password",name="user[password]")
+                .modal-footer
+                    button.btn.btn-default(type="button",data-dismiss="modal") close
+                    button.btn.btn-success(type="submit") submit
+
+.nav
+    .nav-wrap.clearfix
+        .col-xs-3
+            .nav-logo
+                a(href="/")
+                    img(src="/libs/images/movie/movieLogo.png" alt="movieLogo" style="width:115px;height:27px;")
+        .col-md-4
+            form#form-search(action="/results",method="GET")
+                .input-group(style="padding-top:10px")
+                    input.form-control(type="text", name="q",placeholder="search")
+                    span.input-group-btn
+                        button(type='submit').btn.btn-default 搜索
